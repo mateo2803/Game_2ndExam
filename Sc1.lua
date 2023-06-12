@@ -9,10 +9,6 @@ local scene = composer.newScene()
 local background
 local altura = CH/2
 local width  = CW/3
-
-local composer = require( "composer" )
- 
-local scene = composer.newScene()
  
 -------------------------- FUNCTION TO GO BACK TO MENU --------------------------
 
@@ -40,9 +36,10 @@ function scene:create( event )
 
     background = display.newImageRect(sceneGroup, "Images.xcassets/Backgrounds/bg1.png", CW, CH)
     background.x, background.y = CW/2, CH/2
-    background:toFront( )
 
-    -- platformGroup = display.newGroup()
+    -- background2 = display.newImageRect(sceneGroup, "Images.xcassets/Backgrounds/bg1.png", CW, CH)
+    -- background2.x = CW/2 - CW, background.y = CH/2
+
     platformMain = display.newRect( sceneGroup, 0, 520, 2048, 20 )
     platformMain:setFillColor( 0 )
  
@@ -115,16 +112,6 @@ function scene:create( event )
     print(player.sequence, player.frame)
 
     print(physics.getGravity())
-
-    function undoPlayerSetup(player)
-        --player.isVisible = false
-        display.remove(player) 
-        player = nil  
-
-        physics.removeBody(player) 
-
-        physics.setGravity(0, 9.8) 
-    end
 
     function onKeyEvent(event)
         if event.keyName == "right" then
@@ -213,7 +200,6 @@ function scene:hide( event )
         platform3.isVisible = false
         physics.stop()
         background.isVisible = false
-        undoPlayerSetup(player)
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
  
