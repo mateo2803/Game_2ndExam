@@ -104,67 +104,67 @@ function scene:create( event )
 
     }
 
-    local personaje = display.newSprite(c_sprite_right, sequence)
-    personaje.x     = CW - 1000; 
-    personaje.y     = CH - 400
-    personaje:scale(0.9, 0.9)
-    personaje:setSequence("right_move")
-    personaje:play()
+    local player = display.newSprite(c_sprite_right, sequence)
+    player.x     = CW - 1000; 
+    player.y     = CH - 400
+    player:scale(0.9, 0.9)
+    player:setSequence("right_move")
+    player:play()
 
     -- local char_body = {
     --     halfWidth  
     -- }
-    physics.addBody(personaje, "dynami", {sceneGroup, radius = 20, bounce = 1})
-    print(personaje.sequence, personaje.frame)
+    physics.addBody(player, "dynami", {sceneGroup, radius = 20, bounce = 1})
+    print(player.sequence, player.frame)
 
     print(physics.getGravity())
 
     function onKeyEvent(event)
         if event.keyName == "right" then
-            if personaje.isPlaying == false then 
-                personaje:setSequence("right_move")
-                personaje:play()
+            if player.isPlaying == false then 
+                player:setSequence("right_move")
+                player:play()
             end
-            if personaje.sequence ~= "right_move" then
-                personaje:setSequence("right_move")
+            if player.sequence ~= "right_move" then
+                player:setSequence("right_move")
             end
             if event.phase == "down" then
-                personaje:translate(speed, 0 )
+                player:translate(speed, 0 )
             end
         elseif event.keyName == "left" then
-            if personaje.isPlaying == false then 
+            if player.isPlaying == false then 
                 
             end
-            if personaje.sequence ~= "left_move" then
-                personaje:setSequence("left_move")
+            if player.sequence ~= "left_move" then
+                player:setSequence("left_move")
             end
             if event.phase == "down" then
-                personaje:translate(-1*speed, 0 )
-                print(personaje.x, personaje.y)
+                player:translate(-1*speed, 0 )
+                print(player.x, player.y)
             end
         elseif event.keyName == "space" then
-            if personaje.isPlaying == false then 
-                personaje:setSequence("up_move")
-                personaje:play()
+            if player.isPlaying == false then 
+                player:setSequence("up_move")
+                player:play()
             end
-            if personaje.sequence ~= "up_move" then
-                personaje:setSequence("up_move")
+            if player.sequence ~= "up_move" then
+                player:setSequence("up_move")
             end
             if event.phase == "down" then
-                personaje:translate(0, -1*speed )
-                print(personaje.y, personaje.x)
+                player:translate(0, -1*speed )
+                print(player.y, player.x)
             end
         elseif event.keyName == "down" then
-            if personaje.isPlaying == false then 
-                personaje:setSequence("down_move")
-                personaje:play()
+            if player.isPlaying == false then 
+                player:setSequence("down_move")
+                player:play()
             end
-            if personaje.sequence ~= "down_move" then
-                personaje:setSequence("down_move")
+            if player.sequence ~= "down_move" then
+                player:setSequence("down_move")
             end
             if event.phase == "down" then
-                personaje:translate(0, 1*speed )
-                print(personaje.y)
+                player:translate(0, 1*speed )
+                print(player.y)
             end
         end
 
@@ -200,9 +200,13 @@ function scene:hide( event )
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- sceneGroup.isVisible = false
-        --personaje.isVisible  = false
+        platformMain.isVisible = false
+        platform1.isVisible = false
+        platform2.isVisible = false
+        platform3.isVisible = false
+        physics.stop()
         background.isVisible = false
+        player:stop( )
  
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
