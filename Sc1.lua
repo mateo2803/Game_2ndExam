@@ -65,7 +65,7 @@ function scene:create( event )
 
     local char_options = {
         width     = 624/12,
-        height    = 576/9,
+        height    = 576/8,
         numFrames = 96
     }
 
@@ -111,13 +111,20 @@ function scene:create( event )
     player:setSequence("right_move")
     player:play()
 
-    -- local char_body = {
-    --     halfWidth  
-    -- }
     physics.addBody(player, "dynami", {sceneGroup, radius = 20, bounce = 1})
     print(player.sequence, player.frame)
 
     print(physics.getGravity())
+
+    function undoPlayerSetup(player)
+        --player.isVisible = false
+        display.remove(player) 
+        player = nil  
+
+        physics.removeBody(player) 
+
+        physics.setGravity(0, 9.8) 
+    end
 
     function onKeyEvent(event)
         if event.keyName == "right" then
@@ -206,8 +213,7 @@ function scene:hide( event )
         platform3.isVisible = false
         physics.stop()
         background.isVisible = false
-        player:stop( )
- 
+        undoPlayerSetup(player)
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
  
