@@ -4,6 +4,22 @@
 --
 -----------------------------------------------------------------------------------------
 
+greenDark   = { 0/255  , 153/255, 76/255  }
+green       = { 0/255  , 255/255, 0/255   }
+greenLight  = { 153/255, 255/255, 153/255 }
+
+redDark     = { 153/255, 0/255  , 0/255   }
+red         = { 255/255, 0/255  , 0/255   }
+redLight    = { 255/255, 204/255, 204/255 }
+
+yellowDark  = { 153/255, 153/255, 0/255   }
+yellow      = { 255/255, 255/255, 0/255   }
+yellowLight = { 255/255, 255/255, 204/255 } 
+
+lightGrey   = { 224/255, 224/255, 224/255 }
+
+black = {0,0,0}
+
 local composer = require("composer")
 local scene = composer.newScene()
 local background
@@ -40,14 +56,21 @@ function gotoSc4(event)
     return true
 end
 
-function createButton(nx, ny, bx, by, showText, color)
+function createButton(nx, ny, bx, by, showText, color, imagePath)
     local buttonsGroup = display.newGroup()
-    local button = display.newRoundedRect(buttonsGroup, nx, ny, bx, by, 5)
-    button:setFillColor(0, 1, 0) 
-    if showText == true then 
+
+    local button = display.newRoundedRect(buttonsGroup, nx, ny, bx, by, 15)
+    button:setFillColor(unpack(color))
+
+    if imagePath then
+        local image = display.newImageRect(buttonsGroup, imagePath, bx, by)
+        image.x = nx
+        image.y = ny
+    elseif showText == true then
         local buttonText = display.newText(buttonsGroup, "Go", nx, ny, native.systemFontBold, 25)
-        buttonText:setFillColor(0)
+        buttonText:setFillColor(unpack(black))
     end
+
     return buttonsGroup
 end
 
@@ -60,15 +83,15 @@ function scene:create(event)
         filename = "Images.xcassets/Backgrounds/bg0.png"
     }
 
-    rec1 = createButton(200, 380, 170, 700, false)
-    rec2 = createButton(400, 380, 170, 700, false)
-    rec3 = createButton(600, 380, 170, 700, false)
-    rec4 = createButton(800, 380, 170, 700, false)
+    rec1 = createButton(200, 380, 170, 700, false, lightGrey, "Images.xcassets/Backgrounds/bg1.png")
+    rec2 = createButton(400, 380, 170, 700, false, lightGrey, "Images.xcassets/Backgrounds/bg2.png")
+    rec3 = createButton(600, 380, 170, 700, false, lightGrey, "Images.xcassets/Backgrounds/bg3.png")
+    rec4 = createButton(800, 380, 170, 700, false, lightGrey, "Images.xcassets/Backgrounds/bg4.png")
 
-    button1 = createButton(200, 500, 100, 60, true)
-    button2 = createButton(400, 500, 100, 60, true)
-    button3 = createButton(600, 500, 100, 60, true)
-    button4 = createButton(800, 500, 100, 60, true)
+    button1 = createButton(200, 500, 100, 60, true, greenLight)
+    button2 = createButton(400, 500, 100, 60, true, greenLight)
+    button3 = createButton(600, 500, 100, 60, true, greenLight)
+    button4 = createButton(800, 500, 100, 60, true, greenLight)
 
     button1:addEventListener("tap", gotoSc1)
     button2:addEventListener("tap", gotoSc2)
