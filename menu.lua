@@ -97,6 +97,17 @@ function scene:create(event)
     button2:addEventListener("tap", gotoSc2)
     button3:addEventListener("tap", gotoSc3)
     button4:addEventListener("tap", gotoSc4)
+
+    --insertar al grupo de la escena
+    sceneGroup:insert(rec1)
+    sceneGroup:insert(rec2)
+    sceneGroup:insert(rec3)
+    sceneGroup:insert(rec4)
+
+    sceneGroup:insert(button1)
+    sceneGroup:insert(button2)
+    sceneGroup:insert(button3)
+    sceneGroup:insert(button4)
 end
 
 function scene:show(event)
@@ -116,15 +127,7 @@ function scene:hide(event)
     local phase = event.phase
 
     if phase == "will" then
-        button1.isVisible = false
-        button2.isVisible = false
-        button3.isVisible = false
-        button4.isVisible = false
-
-        rec1.isVisible = false
-        rec2.isVisible = false
-        rec3.isVisible = false
-        rec4.isVisible = false
+        
     elseif phase == "did" then
         -- Code here runs immediately after the scene goes entirely off screen
 
