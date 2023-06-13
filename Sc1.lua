@@ -20,9 +20,11 @@ function gotoMenu(event)
     return true
 end
 
-buttonMenu = display.newRect( 0, 50, 100, 60 )
-buttonMenu:setFillColor( 0, 1, 0 )
-buttonMenu:toFront( )
+buttonMenu = display.newRoundedRect( 950, 50, 100, 60, 15 )
+buttonMenu:setFillColor( 153/255, 255/255, 153/255)
+local buttonText = display.newText( "Go Back", 950, 50, native.systemFontBold, 20 )
+buttonText:setFillColor(0,0,0)
+buttonText:toFront( )
 
 
 function scene:create( event )
@@ -93,7 +95,7 @@ function scene:create( event )
         },
         {
             name = "left_move",
-            frames = {13,14,15},
+            frames = {15, 14, 13},
             time = 400,
             sheet = c_sprite_left
 
@@ -108,10 +110,10 @@ function scene:create( event )
     player:setSequence("right_move")
     player:play()
 
-    physics.addBody(player, "dynami", {sceneGroup, radius = 20, bounce = 1})
-    print(player.sequence, player.frame)
+    physics.addBody(player, "dynami", {sceneGroup, radius = 30, bounce = 0.7})
+    --print(player.sequence, player.frame)
 
-    print(physics.getGravity())
+    --print(physics.getGravity())
 
     function onKeyEvent(event)
         if event.keyName == "right" then
