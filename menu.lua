@@ -98,7 +98,6 @@ function scene:create(event)
     button3:addEventListener("tap", gotoSc3)
     button4:addEventListener("tap", gotoSc4)
 
-    --insertar al grupo de la escena
     sceneGroup:insert(rec1)
     sceneGroup:insert(rec2)
     sceneGroup:insert(rec3)
@@ -119,6 +118,8 @@ function scene:show(event)
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen
         button1:addEventListener("touch", gotoSc1)
+        button2:addEventListener("touch", gotoSc2)
+        button3:addEventListener("touch", gotoSc3)
     end
 end
 
@@ -127,7 +128,7 @@ function scene:hide(event)
     local phase = event.phase
 
     if phase == "will" then
-        
+
     elseif phase == "did" then
         -- Code here runs immediately after the scene goes entirely off screen
 

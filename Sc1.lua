@@ -5,59 +5,60 @@
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
-local scene = composer.newScene()
-local background
-local altura = CH/2
-local width  = CW/3
+local physics  = require "physics"
+local scene    = composer.newScene()
+local background, background2
  
--------------------------- FUNCTION TO GO BACK TO MENU --------------------------
+local playerGroup     = display.newGroup() 
+local buttonGroup     = display.newGroup()
+local backgroundGroup = display.newGroup()
+local structuresGroup = display.newGroup()
 
-function gotoMenu(event)
-    if event.phase == "ended" then
-        composer.gotoScene("menu", { time = 1000, effect = "slideLeft" })
-        print("on Menu")
-    end
-    return true
-end
-
-buttonMenu = display.newRoundedRect( 950, 50, 100, 60, 15 )
-buttonMenu:setFillColor( 153/255, 255/255, 153/255)
-local buttonText = display.newText( "Go Back", 950, 50, native.systemFontBold, 20 )
-buttonText:setFillColor(0,0,0)
-buttonText:toFront( )
-
-
+---------------------------------- create() ----------------------------------
 function scene:create( event )
 -------------------------- PHYSICS, BACKGROUND AND STRUCTURES --------------------------
-    local physics = require "physics"
+    local sceneGroup = self.view
+
+    
     physics.start()
+    physics.pause()
     physics.setDrawMode("hybrid")
 
-    local sceneGroup = self.view
-    grupoGrilla = display.newGroup()
+    
+    sceneGroup:insert(backgroundGroup)
+    sceneGroup:insert(structuresGroup)
 
-    background = display.newImageRect(sceneGroup, "Images.xcassets/Backgrounds/bg1.png", CW, CH)
+    buttonMenu = display.newRoundedRect( buttonGroup, 950, 50, 100, 60, 15 )
+    buttonMenu:setFillColor( 153/255, 255/255, 153/255)
+    buttonMenu:toFront( )
+    local buttonText = display.newText( buttonGroup, "Go Back", 950, 50, native.systemFontBold, 20 )
+    buttonText:setFillColor(0,0,0)
+    buttonText:toFront( )
+
+    background = display.newImageRect(backgroundGroup, "Images.xcassets/Backgrounds/bg1.png", CW, CH)
     background.x, background.y = CW/2, CH/2
 
-    -- background2 = display.newImageRect(sceneGroup, "Images.xcassets/Backgrounds/bg1.png", CW, CH)
-    -- background2.x = CW/2 - CW, background.y = CH/2
+    background2 = display.newImageRect(backgroundGroup, "Images.xcassets/Backgrounds/bg1.png", CW, CH)
+    background2.x = CW/2 + CW; background2.y = CH/2
 
-    platformMain = display.newRect( sceneGroup, 0, 520, 2048, 20 )
+    local scenario = 1
+
+    platformMain = display.newRect( structuresGroup, 0, 520, 2048, 20 )
     platformMain:setFillColor( 0 )
  
-    platform1 = display.newRect( sceneGroup, 220, 490, 30, 40 )
+    platform1 = display.newRect( structuresGroup, 220, 490, 30, 40 )
     platform1:setFillColor( 0 )
 
-    platform2 = display.newRect( sceneGroup, 340, 500, 80, 40 )
+    platform2 = display.newRect( structuresGroup, 340, 500, 80, 40 )
     platform2:setFillColor( 0 )
 
-    platform3 = display.newRect( sceneGroup, 620, 500, 160, 50 )
+    platform3 = display.newRect( structuresGroup, 620, 500, 160, 50 )
     platform3:setFillColor( 0 )
 
-    physics.addBody( platformMain, "static" )
-    physics.addBody( platform1, "static" )
-    physics.addBody( platform2, "static" )
-    physics.addBody( platform3, "static" )
+    physics.addBody( platformMain, "static", {friction = 1} )
+    physics.addBody( platform1, "static", {friction = 1} )
+    physics.addBody( platform2, "static", {friction = 1} )
+    physics.addBody( platform3, "static", {friction = 1} )
 
 -------------------------- CHARACTER MOVEMENT --------------------------
     local speed = 15
@@ -103,16 +104,16 @@ function scene:create( event )
 
     }
 
-    local player = display.newSprite(c_sprite_right, sequence)
+    local player = display.newSprite(sceneGroup, c_sprite_right, sequence)
     player.x     = CW - 1000; 
     player.y     = CH - 400
     player:scale(0.9, 0.9)
     player:setSequence("right_move")
     player:play()
 
-    physics.addBody(player, "dynami", {sceneGroup, radius = 30, bounce = 0.7})
-    --print(player.sequence, player.frame)
-
+    physics.addBody(player, "dynami", {radius = 30, bounce = 0.7, friction = 0.1})
+    print(player.sequence, player.frame)
+    player.isFixedRotation = true
     --print(physics.getGravity())
 
     function onKeyEvent(event)
@@ -129,7 +130,8 @@ function scene:create( event )
             end
         elseif event.keyName == "left" then
             if player.isPlaying == false then 
-                
+                player:setSequence("left_move")
+                player:play()
             end
             if player.sequence ~= "left_move" then
                 player:setSequence("left_move")
@@ -166,57 +168,91 @@ function scene:create( event )
 
     end
 
+    -- Runtime:addEventListener("enterFrame", camera)
     Runtime:addEventListener("key", onKeyEvent)
     buttonMenu:addEventListener("tap", gotoMenu)
     buttonMenu:addEventListener("tap", gotoMenu)
+
+    sceneGroup:insert(buttonGroup)
+    sceneGroup:insert(playerGroup)
 end
  
- 
--- show()
+---------------------------------- show() ----------------------------------
 function scene:show( event )
  
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
+        -- physics.start()
         -- Code here runs when the scene is still off screen (but is about to come on screen)
  
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
+        physics.start()
         buttonMenu:addEventListener("touch", gotoMenu)
  
     end
 end
  
  
--- hide()
+---------------------------------- hide() ----------------------------------
 function scene:hide( event )
  
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
-        platformMain.isVisible = false
-        platform1.isVisible = false
-        platform2.isVisible = false
-        platform3.isVisible = false
-        physics.stop()
-        background.isVisible = false
+         -- physics.start()
+         -- physics.stop()
     elseif ( phase == "did" ) then
+        
         -- Code here runs immediately after the scene goes entirely off screen
  
     end
 end
  
  
--- destroy()
+---------------------------------- destroy() ----------------------------------
 function scene:destroy( event )
  
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
  
 end
- 
+
+---------------------------------- NEW SCENE ----------------------------------
+function newScreen()
+    player.x = 20
+    transition.to(backgroundGroup,{alpha = 1, time =1000, delay=500})
+        local paint = {
+        type = "image",
+        filename = "Images.xcassets/Backgrounds/bg1.png"
+    }
+    background.fill = paint
+end
+
+function nextScreen()
+    if scenario == 1 then
+        transition.to(backgroundGroup, {alpha = 0.1, time = 1500, delay = 500, onComplete=newScreen})
+        scenario = 2
+    end
+end
+
+function camera(e)
+    backgroundGroup.x = player.x + CW/2 --defase 
+    player.x = backgroundGroup.x
+end
+
+-------------------------- GO BACK TO MENU --------------------------
+
+function gotoMenu(event)
+    if event.phase == "ended" then
+        composer.gotoScene("menu", { time = 1000, effect = "slideLeft" })
+        print("on Menu")
+    end
+    return true
+end
  
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
