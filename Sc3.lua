@@ -17,7 +17,7 @@ local structuresGroup = display.newGroup()
 
 function gotoMenu(event)
     if event.phase == "ended" then
-        composer.gotoScene("menu", { time = 1000, effect = "slideLeft" })
+        composer.gotoScene("menu", { time = 1000, effect = "slideRight" })
         print("on Menu")
     end
     return true
@@ -56,8 +56,8 @@ function scene:create( event )
     platform2 = display.newRect( structuresGroup, 420, 580, 90, 100 )
     platform2:setFillColor( 0 )
 
-    -- platform3 = display.newRect( structuresGroup, 0, 270, 550, 20 )
-    -- platform3:setFillColor( 0 )
+    platform3 = display.newRect( structuresGroup, 465, 580, 550, 20 )
+    platform3:setFillColor( 0 )
 
     -- platform4 = display.newRect( structuresGroup, 900, 270, 350, 20 )
     -- platform4:setFillColor( 0 )

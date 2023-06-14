@@ -120,6 +120,7 @@ function scene:show(event)
         button1:addEventListener("touch", gotoSc1)
         button2:addEventListener("touch", gotoSc2)
         button3:addEventListener("touch", gotoSc3)
+        button4:addEventListener("touch", gotoSc4)
     end
 end
 

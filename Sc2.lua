@@ -3,15 +3,13 @@
 -- Sc2.lua
 --
 -----------------------------------------------------------------------------------------
-
+local physics  = require "physics"
 local composer = require( "composer" )
-local scene = composer.newScene()
-local background
-local altura = CH/2
-local width  = CW/3
+local scene    = composer.newScene()
+local background, background2, player
  
-local playerGroup = display.newGroup() 
-local buttonGroup = display.newGroup()
+local playerGroup     = display.newGroup() 
+local buttonGroup     = display.newGroup()
 local backgroundGroup = display.newGroup()
 local structuresGroup = display.newGroup()
 
@@ -27,8 +25,8 @@ function scene:create( event )
 -------------------------- PHYSICS, BACKGROUND AND STRUCTURES --------------------------
     local sceneGroup = self.view
 
-    local physics = require "physics"
     physics.start()
+    physics.pause()
     physics.setDrawMode("hybrid")
 
     
@@ -115,7 +113,7 @@ function scene:create( event )
 
     }
 
-    local player = display.newSprite(sceneGroup, c_sprite_right, sequence)
+    player = display.newSprite(sceneGroup, c_sprite_right, sequence)
     player.x     = CW - 1000; 
     player.y     = CH - 400
     player:scale(2, 2)
@@ -222,7 +220,7 @@ function scene:show( event )
     local phase = event.phase
  
     if ( phase == "will" ) then
-        physics.start()
+        -- physics.start()
         -- Code here runs when the scene is still off screen (but is about to come on screen)
  
     elseif ( phase == "did" ) then
@@ -243,7 +241,7 @@ function scene:hide( event )
     if ( phase == "will" ) then
          
     elseif ( phase == "did" ) then
-        physics.stop()
+        -- physics.stop()
         -- Code here runs immediately after the scene goes entirely off screen
  
     end
