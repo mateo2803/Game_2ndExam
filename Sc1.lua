@@ -7,23 +7,19 @@
 local composer = require( "composer" )
 local physics  = require "physics"
 local scene    = composer.newScene()
-local background, background2
-local player
- 
+local background, background2, player
+---------------------------------- GROUPS ---------------------------------- 
 local playerGroup     = display.newGroup() 
 local buttonGroup     = display.newGroup()
 local backgroundGroup = display.newGroup()
-
----------------------------------- create() ----------------------------------
+-------------------------------- create() ----------------------------------
 function scene:create( event )
--------------------------- PHYSICS, BACKGROUND AND STRUCTURES --------------------------
+------------------- PHYSICS, BACKGROUND AND STRUCTURES ---------------------
     local sceneGroup = self.view
-
     
     physics.start()
     physics.pause()
     physics.setDrawMode("hybrid")
-
     
     sceneGroup:insert(backgroundGroup)
     sceneGroup:insert(buttonGroup)
@@ -57,7 +53,7 @@ function scene:create( event )
     physics.addBody( platform3, "static", {friction = 1} )
     physics.addBody( platform4, "static", {friction = 1} )
 
--------------------------- CHARACTER MOVEMENT --------------------------
+-------------------------- CHARACTER MOVEMENT ------------------------------
     local speed = 20
 
     local char_options = {
@@ -101,17 +97,15 @@ function scene:create( event )
 
     }
 
-    player = display.newSprite(backgroundGroup, c_sprite_right, sequence)
-    player.x     = CW/2; 
-    player.y     = CH - 400
+    player   = display.newSprite(backgroundGroup, c_sprite_right, sequence)
+    player.x = CW/2; 
+    player.y = CH - 400
     player:scale(0.9, 0.9)
     player:setSequence("right_move")
     player:play()
 
     physics.addBody(player, "dynami", {radius = 30, bounce = 0.7, friction = 0.1})
-    -- print(player.sequence, player.frame)
     player.isFixedRotation = true
-    --print(physics.getGravity())
 
     buttonMenu = display.newRoundedRect( buttonGroup, 950, 50, 100, 60, 15 )
     buttonMenu:setFillColor( 153/255, 255/255, 153/255)
@@ -172,15 +166,14 @@ function scene:create( event )
 
     end
 
-    Runtime:addEventListener("enterFrame", camera)
-    Runtime:addEventListener("key", onKeyEvent)
-    buttonMenu:addEventListener("tap", gotoMenu)
-    buttonMenu:addEventListener("tap", gotoMenu)
+    Runtime:addEventListener   ("enterFrame", camera    )
+    Runtime:addEventListener   ("key"       , onKeyEvent)
+    buttonMenu:addEventListener("tap"       , gotoMenu  )
+    buttonMenu:addEventListener("tap"       , gotoMenu  )
 
     sceneGroup:insert(buttonGroup)
     sceneGroup:insert(playerGroup)
 end
- 
 ---------------------------------- show() ----------------------------------
 function scene:show( event )
  
@@ -189,43 +182,28 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         physics.start()
-        -- Code here runs when the scene is still off screen (but is about to come on screen)
- 
     elseif ( phase == "did" ) then
-        -- Code here runs when the scene is entirely on screen
         physics.start()
         buttonMenu:addEventListener("touch", gotoMenu)
- 
     end
 end
- 
- 
 ---------------------------------- hide() ----------------------------------
 function scene:hide( event )
- 
     local sceneGroup = self.view
     local phase = event.phase
- 
     if ( phase == "will" ) then
-        -- physics.start()
          physics.stop()
     elseif ( phase == "did" ) then
         
-        -- Code here runs immediately after the scene goes entirely off screen
- 
     end
 end
- 
- 
----------------------------------- destroy() ----------------------------------
+---------------------------------- destroy() -------------------------------
 function scene:destroy( event )
  
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
- 
 end
-
----------------------------------- NEW SCENE ----------------------------------
+---------------------------------- NEW SCENE -------------------------------
 function newScreen()
     player.x = 20
     transition.to(backgroundGroup,{alpha = 1, time =1000, delay=500})
@@ -236,20 +214,11 @@ function newScreen()
     background.fill = paint
 end
 
-function nextScreen()
-    if scenario == 1 then
-        transition.to(backgroundGroup, {alpha = 0.1, time = 1500, delay = 500, onComplete=newScreen})
-        scenario = 2
-    end
-end
-
 function camera(e)
     backgroundGroup.x = -player.x + CW/2   --defase 
     --buttonGroup.x = -backgroundGroup.x
 end
-
--------------------------- GO BACK TO MENU --------------------------
-
+-------------------------- GO BACK TO MENU ---------------------------------
 function gotoMenu(event)
     if event.phase == "ended" then
         composer.gotoScene("menu", { time = 1000, effect = "slideLeft" })
@@ -257,14 +226,10 @@ function gotoMenu(event)
     end
     return true
 end
- 
--- -----------------------------------------------------------------------------------
--- Scene event function listeners
--- -----------------------------------------------------------------------------------
+-------------------------- listeners ---------------------------------------
 scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
--- -----------------------------------------------------------------------------------
  
 return scene
