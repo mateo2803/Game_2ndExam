@@ -183,7 +183,7 @@ function scene:show( event )
     if ( phase == "will" ) then
         physics.start()
     elseif ( phase == "did" ) then
-        physics.start()
+        --physics.start()
         buttonMenu:addEventListener("touch", gotoMenu)
     end
 end
@@ -199,9 +199,7 @@ function scene:hide( event )
 end
 ---------------------------------- destroy() -------------------------------
 function scene:destroy( event )
- 
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view
 end
 ---------------------------------- NEW SCENE -------------------------------
 function newScreen()

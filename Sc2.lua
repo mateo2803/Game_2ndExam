@@ -6,7 +6,7 @@
 local physics  = require "physics"
 local composer = require( "composer" )
 local scene    = composer.newScene()
-local background, background2, player
+local background, background2, background3, player
 ---------------------------------- GROUPS ---------------------------------- 
 local playerGroup     = display.newGroup() 
 local buttonGroup     = display.newGroup()
@@ -99,7 +99,7 @@ function scene:create( event )
 
     }
 
-    player   = display.newSprite(sceneGroup, c_sprite_right, sequence)
+    player   = display.newSprite(backgroundGroup, c_sprite_right, sequence)
     player.x = CW/2; 
     player.y = CH - 400
     player:scale(2, 2)

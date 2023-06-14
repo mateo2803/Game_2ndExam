@@ -7,8 +7,7 @@
 local composer = require( "composer" )
 local physics  = require "physics"
 local scene    = composer.newScene()
-local background, background2
-local player
+local background, background2, background3, player
  
 local playerGroup     = display.newGroup() 
 local buttonGroup     = display.newGroup()
@@ -18,12 +17,10 @@ local backgroundGroup = display.newGroup()
 function scene:create( event )
 -------------------------- PHYSICS, BACKGROUND AND STRUCTURES --------------------------
     local sceneGroup = self.view
-
     
     physics.start()
     physics.pause()
     physics.setDrawMode("hybrid")
-
     
     sceneGroup:insert(backgroundGroup)
     sceneGroup:insert(buttonGroup)
@@ -36,22 +33,26 @@ function scene:create( event )
 
     local scenario = 1
 
-    platformMain = display.newRect( backgroundGroup, 500, 520, 2048, 20 )
+    platformMain = display.newRect( backgroundGroup, 1000, 540, 2048, 20 )
     platformMain:setFillColor( 0 )
+
+    platform1 = display.newLine( backgroundGroup, 100, 200, 200, 200, 300, 200)
+    platform1.strokeWidth = 2
+    platform1:setStrokeColor(1, 0, 0) -- Set stroke color to red
  
-    platform1 = display.newRect( backgroundGroup, 220, 490, 30, 40 )
-    platform1:setFillColor( 0 )
+    -- platform1 = display.newRect( backgroundGroup, 220, 490, 30, 40 )
+    -- platform1:setFillColor( 0 )
 
-    platform2 = display.newRect( backgroundGroup, 340, 500, 80, 40 )
-    platform2:setFillColor( 0 )
+    -- platform2 = display.newRect( backgroundGroup, 340, 500, 80, 40 )
+    -- platform2:setFillColor( 0 )
 
-    platform3 = display.newRect( backgroundGroup, 620, 500, 160, 50 )
-    platform3:setFillColor( 0 )
+    -- platform3 = display.newRect( backgroundGroup, 620, 500, 160, 50 )
+    -- platform3:setFillColor( 0 )
 
     physics.addBody( platformMain, "static", {friction = 1} )
-    physics.addBody( platform1, "static", {friction = 1} )
-    physics.addBody( platform2, "static", {friction = 1} )
-    physics.addBody( platform3, "static", {friction = 1} )
+    physics.addBody( platform1, "static", {friction = 2} )
+    -- physics.addBody( platform2, "static", {friction = 1} )
+    -- physics.addBody( platform3, "static", {friction = 1} )
 
 -------------------------- CHARACTER MOVEMENT --------------------------
     local speed = 15
@@ -70,7 +71,7 @@ function scene:create( event )
     local sequence = {
         {
             name = "right_move",
-            frames = {25,26,27},
+            frames = {76,77,78},
             time = 400,  --  1 segundo cada 12 cuadros   8/12  2/3 
             loopCount = 0,
             sheet = c_sprite_right
@@ -78,36 +79,32 @@ function scene:create( event )
         {
             name = "up_move",
             time = 400,
-            frames = {37,38,39},
+            frames = {88,89,90},
             sheet = c_sprite_up
         },{
             name = "down_move",
-            frames = {1,2,3},
+            frames = {52,53,54},
             loopCount = 1,
             time = 400,
             sheet = c_sprite_down
         },
         {
             name = "left_move",
-            frames = {15, 14, 13},
+            frames = {64,65,65},
             time = 400,
             sheet = c_sprite_left
-
         }
-
     }
 
     player = display.newSprite(backgroundGroup, c_sprite_right, sequence)
     player.x     = CW/2; 
     player.y     = CH - 400
-    player:scale(0.9, 0.9)
+    player:scale(1.1, 1.1)
     player:setSequence("right_move")
     player:play()
 
     physics.addBody(player, "dynami", {radius = 30, bounce = 0.7, friction = 0.1})
-    -- print(player.sequence, player.frame)
     player.isFixedRotation = true
-    --print(physics.getGravity())
 
     buttonMenu = display.newRoundedRect( buttonGroup, 950, 50, 100, 60, 15 )
     buttonMenu:setFillColor( 153/255, 255/255, 153/255)
@@ -179,48 +176,31 @@ end
  
 ---------------------------------- show() ----------------------------------
 function scene:show( event )
- 
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
         -- physics.start()
-        -- Code here runs when the scene is still off screen (but is about to come on screen)
  
     elseif ( phase == "did" ) then
-        -- Code here runs when the scene is entirely on screen
         physics.start()
         buttonMenu:addEventListener("touch", gotoMenu)
- 
     end
 end
- 
- 
 ---------------------------------- hide() ----------------------------------
 function scene:hide( event )
- 
     local sceneGroup = self.view
     local phase = event.phase
- 
     if ( phase == "will" ) then
          -- physics.start()
-         -- physics.stop()
     elseif ( phase == "did" ) then
-        
         -- Code here runs immediately after the scene goes entirely off screen
- 
     end
 end
- 
- 
 ---------------------------------- destroy() ----------------------------------
 function scene:destroy( event )
- 
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view
- 
 end
-
 ---------------------------------- NEW SCENE ----------------------------------
 function newScreen()
     player.x = 20
@@ -232,20 +212,10 @@ function newScreen()
     background.fill = paint
 end
 
-function nextScreen()
-    if scenario == 1 then
-        transition.to(backgroundGroup, {alpha = 0.1, time = 1500, delay = 500, onComplete=newScreen})
-        scenario = 2
-    end
-end
-
 function camera(e)
     backgroundGroup.x = -player.x + CW/2   --defase 
-    buttonGroup.x = -backgroundGroup.x
 end
-
 -------------------------- GO BACK TO MENU --------------------------
-
 function gotoMenu(event)
     if event.phase == "ended" then
         composer.gotoScene("menu", { time = 1000, effect = "slideRight" })
@@ -253,14 +223,10 @@ function gotoMenu(event)
     end
     return true
 end
- 
--- -----------------------------------------------------------------------------------
--- Scene event function listeners
--- -----------------------------------------------------------------------------------
+-------------------------- listeners ---------------------------------------
 scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
--- -----------------------------------------------------------------------------------
  
 return scene
