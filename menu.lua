@@ -21,9 +21,10 @@ lightGrey   = { 224/255, 224/255, 224/255 }
 black = {0,0,0}
 
 local composer = require("composer")
-local scene = composer.newScene()
+local scene    = composer.newScene()
 local background
 
+---------------------- GO TO SCENE 1 ----------------------
 function gotoSc1(event)
     if event.phase == "ended" then
         composer.gotoScene("Sc1", { time = 1000, effect = "slideRight" })
@@ -31,7 +32,7 @@ function gotoSc1(event)
     end
     return true
 end
-
+---------------------- GO TO SCENE 2 ----------------------
 function gotoSc2(event)
     if event.phase == "ended" then
         composer.gotoScene("Sc2", { time = 1000, effect = "slideRight" })
@@ -39,7 +40,7 @@ function gotoSc2(event)
     end
     return true
 end
-
+---------------------- GO TO SCENE 3 ----------------------
 function gotoSc3(event)
     if event.phase == "ended" then
         composer.gotoScene("Sc3", { time = 1000, effect = "slideLeft" })
@@ -47,7 +48,7 @@ function gotoSc3(event)
     end
     return true
 end
-
+---------------------- GO TO SCENE 4 ----------------------
 function gotoSc4(event)
     if event.phase == "ended" then
         composer.gotoScene("Sc4", { time = 1000, effect = "slideLeft" })
@@ -55,7 +56,7 @@ function gotoSc4(event)
     end
     return true
 end
-
+---------------------- BUTTONS AND BG IMAGES ----------------------
 function createButton(nx, ny, bx, by, showText, color, imagePath)
     local buttonsGroup = display.newGroup()
 
@@ -73,7 +74,7 @@ function createButton(nx, ny, bx, by, showText, color, imagePath)
 
     return buttonsGroup
 end
-
+---------------------------------- create() ----------------------------------
 function scene:create(event)
     local sceneGroup = self.view
     background = display.newRect(sceneGroup, 0, 0, CW, CH)
@@ -108,22 +109,21 @@ function scene:create(event)
     sceneGroup:insert(button3)
     sceneGroup:insert(button4)
 end
-
+---------------------------------- show() ----------------------------------
 function scene:show(event)
     local sceneGroup = self.view
     local phase = event.phase
 
     if phase == "will" then
-        -- Code here runs when the scene is still off screen (but is about to come on screen)
+
     elseif phase == "did" then
-        -- Code here runs when the scene is entirely on screen
         button1:addEventListener("touch", gotoSc1)
         button2:addEventListener("touch", gotoSc2)
         button3:addEventListener("touch", gotoSc3)
         button4:addEventListener("touch", gotoSc4)
     end
 end
-
+---------------------------------- hide() ----------------------------------
 function scene:hide(event)
     local sceneGroup = self.view
     local phase = event.phase
@@ -131,16 +131,14 @@ function scene:hide(event)
     if phase == "will" then
 
     elseif phase == "did" then
-        -- Code here runs immediately after the scene goes entirely off screen
 
     end
 end
-
+---------------------------------- destroy() ----------------------------------
 function scene:destroy(event)
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view
 end
-
+---------------------------------- destroy() ----------------------------------
 scene:addEventListener("create", scene)
 scene:addEventListener("show", scene)
 scene:addEventListener("hide", scene)
