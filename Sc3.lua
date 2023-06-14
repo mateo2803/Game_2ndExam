@@ -170,7 +170,6 @@ function scene:create( event )
 end 
  ---------------------------------- show() ----------------------------------
 function scene:show( event )
-    -- physics.start()
     local sceneGroup = self.view
     local phase = event.phase
  
@@ -186,7 +185,7 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
     if ( phase == "will" ) then
-         physics.pause()
+         -- physics.pause()
     elseif ( phase == "did" ) then
         physics.stop()
     end

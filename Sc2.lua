@@ -195,9 +195,9 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
     if ( phase == "will" ) then
-        physics.stop() 
+        -- physics.stop() 
     elseif ( phase == "did" ) then
-        
+        physics.stop()
     end
 end
 -------------------------- destroy() --------------------------

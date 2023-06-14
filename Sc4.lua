@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------
 --
--- Sc1.lua
+-- Sc4.lua
 --
 -----------------------------------------------------------------------------------------
 
@@ -36,23 +36,23 @@ function scene:create( event )
     platformMain = display.newRect( backgroundGroup, 1000, 540, 2048, 20 )
     platformMain:setFillColor( 0 )
 
-    platform1 = display.newLine( backgroundGroup, 100, 200, 200, 200, 300, 200)
-    platform1.strokeWidth = 2
-    platform1:setStrokeColor(1, 0, 0) -- Set stroke color to red
- 
-    -- platform1 = display.newRect( backgroundGroup, 220, 490, 30, 40 )
-    -- platform1:setFillColor( 0 )
+    platform1 = display.newRect( backgroundGroup, CW/2 + 30, 280, 200, 20 )
+    platform1:setStrokeColor(0) 
 
-    -- platform2 = display.newRect( backgroundGroup, 340, 500, 80, 40 )
-    -- platform2:setFillColor( 0 )
+    platform2 = display.newRect( backgroundGroup, CW/2 + 195, 240, 50, 20 )
+    platform2:setFillColor( 0 )
 
-    -- platform3 = display.newRect( backgroundGroup, 620, 500, 160, 50 )
-    -- platform3:setFillColor( 0 )
+    platform3 = display.newRect( backgroundGroup, CW/2 + 400, 200, 100, 20 )
+    platform3:setFillColor( 0 )
 
-    physics.addBody( platformMain, "static", {friction = 1} )
-    physics.addBody( platform1, "static", {friction = 2} )
-    -- physics.addBody( platform2, "static", {friction = 1} )
-    -- physics.addBody( platform3, "static", {friction = 1} )
+    platform4 = display.newRect( backgroundGroup, CW/2 + 640, 270, 110, 20 )
+    platform4:setFillColor( 0 )
+
+    physics.addBody( platformMain, "static", {bounce = 1, friction = 1} )
+    physics.addBody( platform1, "static", {friction = 1} )
+    physics.addBody( platform2, "static", {friction = 1} )
+    physics.addBody( platform3, "static", {friction = 1} )
+    physics.addBody( platform4, "static", {friction = 1} )
 
 -------------------------- CHARACTER MOVEMENT --------------------------
     local speed = 15
@@ -98,7 +98,7 @@ function scene:create( event )
 
     player = display.newSprite(backgroundGroup, c_sprite_right, sequence)
     player.x     = CW/2; 
-    player.y     = CH - 400
+    player.y     = 0
     player:scale(1.1, 1.1)
     player:setSequence("right_move")
     player:play()
@@ -135,7 +135,6 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(-1*speed, 0 )
-                print(player.x, player.y)
             end
         elseif event.keyName == "space" then
             if player.isPlaying == false then 
@@ -147,7 +146,6 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(0, -4*speed )
-                print(player.y, player.x)
             end
         elseif event.keyName == "down" then
             if player.isPlaying == false then 
@@ -159,16 +157,15 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(0, 1*speed )
-                print(player.y)
             end
         end
 
     end
 
-    Runtime:addEventListener("enterFrame", camera)
-    Runtime:addEventListener("key", onKeyEvent)
-    buttonMenu:addEventListener("tap", gotoMenu)
-    buttonMenu:addEventListener("tap", gotoMenu)
+    Runtime:addEventListener   ("enterFrame", camera)
+    Runtime:addEventListener   ("key"       , onKeyEvent)
+    buttonMenu:addEventListener("tap"       , gotoMenu)
+    buttonMenu:addEventListener("tap"       , gotoMenu)
 
     sceneGroup:insert(buttonGroup)
     sceneGroup:insert(playerGroup)
@@ -181,7 +178,6 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- physics.start()
- 
     elseif ( phase == "did" ) then
         physics.start()
         buttonMenu:addEventListener("touch", gotoMenu)
@@ -194,6 +190,7 @@ function scene:hide( event )
     if ( phase == "will" ) then
          -- physics.start()
     elseif ( phase == "did" ) then
+        physics.stop()
         -- Code here runs immediately after the scene goes entirely off screen
     end
 end

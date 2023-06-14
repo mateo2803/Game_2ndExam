@@ -175,9 +175,11 @@ function scene:show( event )
     local phase = event.phase
  
     if ( phase == "will" ) then
-        physics.start()
+
     elseif ( phase == "did" ) then
-        --physics.start()
+        physics.start()
+        -- physics.pause()
+        -- physics.setDrawMode( "normal" )
         buttonMenu:addEventListener("touch", gotoMenu)
     end
 end
@@ -186,9 +188,10 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
     if ( phase == "will" ) then
+         physics.start()
          physics.stop()
     elseif ( phase == "did" ) then
-        
+        physics.start()
     end
 end
 ---------------------------------- destroy() -------------------------------
