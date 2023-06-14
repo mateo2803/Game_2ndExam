@@ -98,7 +98,7 @@ function scene:create( event )
     player   = display.newSprite(backgroundGroup, c_sprite_right, sequence)
     player.x = 300; 
     player.y = CH - 400
-    player:scale(0.9, 0.9)
+    player:scale(1, 1)
     player:setSequence("right_move")
     player:play()
 

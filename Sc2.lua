@@ -53,7 +53,7 @@ function scene:create( event )
     physics.addBody( platform2, "static", {friction = 1} )
     physics.addBody( platform3, "static", {friction = 1} )
     physics.addBody( platform4, "static", {friction = 1} )
-    physics.addBody( platform5, "static", {friction = 1} )
+    physics.addBody( platform5, "static", {bounce = 1, friction = 1} )
 
 -------------------------- CHARACTER MOVEMENT --------------------------
     local speed = 15
@@ -144,13 +144,13 @@ function scene:create( event )
 	            if not spacePressed then
 	                player:setSequence("up_move")
 	                player:play()
-	                player:translate(0, -5 * speed)
+	                player:translate(0, -4 * speed)
 	                spacePressed = true
 	            else
 	                -- Perform double jump action
 	                player:setSequence("up_move")
 	                player:play()
-	                player:translate(0, -5 * speed)
+	                player:translate(0, -4 * speed)
 	                spacePressed = false
 	            end
         	end

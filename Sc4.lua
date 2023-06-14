@@ -48,11 +48,19 @@ function scene:create( event )
     platform4 = display.newRect( backgroundGroup, CW/2 + 640, 270, 110, 20 )
     platform4:setFillColor( 0 )
 
-    physics.addBody( platformMain, "static", {bounce = 1, friction = 1} )
-    physics.addBody( platform1, "static", {friction = 1} )
-    physics.addBody( platform2, "static", {friction = 1} )
-    physics.addBody( platform3, "static", {friction = 1} )
-    physics.addBody( platform4, "static", {friction = 1} )
+    platform5 = display.newRect( backgroundGroup, CW/2 + 860, 290, 80, 20 )
+    platform5:setFillColor( 0 )
+
+    platform6 = display.newRect( backgroundGroup, CW/2 + 1100, 410, 200, 20 )
+    platform6:setFillColor( 0 )
+
+    physics.addBody( platformMain, "static", {bounce = 1, friction = 0.5} )
+    physics.addBody( platform1, "static", {friction = 0.5} )
+    physics.addBody( platform2, "static", {friction = 0.5} )
+    physics.addBody( platform3, "static", {friction = 0.5} )
+    physics.addBody( platform4, "static", {friction = 0.5} )
+    physics.addBody( platform5, "static", {friction = 0.5} )
+    physics.addBody( platform6, "static", {friction = 0.5} )
 
 -------------------------- CHARACTER MOVEMENT --------------------------
     local speed = 15
