@@ -102,7 +102,7 @@ function scene:create( event )
     player:setSequence("right_move")
     player:play()
 
-    physics.addBody(player, "dynami", {radius = 30, bounce = 0.9, friction = 0.1})
+    physics.addBody(player, "dynami", {radius = 30, bounce = 0.0, friction = 0.1})
     player.isFixedRotation = true
 
     buttonMenu = display.newRoundedRect( buttonGroup, 950, 50, 100, 60, 15 )
@@ -134,7 +134,6 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(-1*speed, 0 )
-                print(player.x, player.y)
             end
         elseif event.keyName == "space" then
             if player.isPlaying == false then 
@@ -145,8 +144,7 @@ function scene:create( event )
                 player:setSequence("up_move")
             end
             if event.phase == "down" then
-                player:translate(0, -1*speed )
-                print(player.y, player.x)
+                player:translate(0, -4*speed )
             end
         elseif event.keyName == "down" then
             if player.isPlaying == false then 
@@ -158,7 +156,6 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(0, 1*speed )
-                print(player.y)
             end
         end
     end
@@ -182,7 +179,6 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         physics.start()
         buttonMenu:addEventListener("touch", gotoMenu)
- 
     end
 end
  ---------------------------------- hide() ----------------------------------

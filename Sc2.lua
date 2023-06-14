@@ -106,7 +106,7 @@ function scene:create( event )
     player:setSequence("right_move")
     player:play()
 
-    physics.addBody(player, "dynami", {radius = 60, bounce = 1, friction = 0.1})
+    physics.addBody(player, "dynami", {radius = 60, bounce = 0.5, friction = 0.1})
     player.isFixedRotation = true
 
     buttonMenu = display.newRoundedRect( buttonGroup, 950, 50, 100, 60, 15 )
@@ -138,20 +138,22 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(-1*speed, 0 )
-                print(player.x, player.y)
             end
-        elseif event.keyName == "space" then
-            if player.isPlaying == false then 
-                player:setSequence("up_move")
-                player:play()
-            end
-            if player.sequence ~= "up_move" then
-                player:setSequence("up_move")
-            end
-            if event.phase == "down" then
-                player:translate(0, -1*speed )
-                print(player.y, player.x)
-            end
+         elseif event.keyName == "space" then
+	        if event.phase == "down" then
+	            if not spacePressed then
+	                player:setSequence("up_move")
+	                player:play()
+	                player:translate(0, -5 * speed)
+	                spacePressed = true
+	            else
+	                -- Perform double jump action
+	                player:setSequence("up_move")
+	                player:play()
+	                player:translate(0, -5 * speed)
+	                spacePressed = false
+	            end
+        	end
         elseif event.keyName == "down" then
             if player.isPlaying == false then 
                 player:setSequence("down_move")
@@ -162,7 +164,6 @@ function scene:create( event )
             end
             if event.phase == "down" then
                 player:translate(0, 1*speed )
-                print(player.y)
             end
         end
 

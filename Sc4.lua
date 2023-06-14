@@ -103,7 +103,7 @@ function scene:create( event )
     player:setSequence("right_move")
     player:play()
 
-    physics.addBody(player, "dynami", {radius = 30, bounce = 0.7, friction = 0.1})
+    physics.addBody(player, "dynami", {radius = 30, bounce = 0, friction = 0.1})
     player.isFixedRotation = true
 
     buttonMenu = display.newRoundedRect( buttonGroup, 950, 50, 100, 60, 15 )
@@ -146,7 +146,7 @@ function scene:create( event )
                 player:setSequence("up_move")
             end
             if event.phase == "down" then
-                player:translate(0, -1*speed )
+                player:translate(0, -4*speed )
                 print(player.y, player.x)
             end
         elseif event.keyName == "down" then
